@@ -42,7 +42,14 @@ namespace ProofOfConceptRabbitMqConsole
 
                         if (response.StatusCode == System.Net.HttpStatusCode.Created)
                         {
-                            channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+                            try
+                            {
+                                channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             Console.WriteLine($"Done {message}");
                         }
                         else
@@ -57,10 +64,11 @@ namespace ProofOfConceptRabbitMqConsole
                 channel.BasicConsume(queue: "task_queue",
                                      autoAck: false,
                                      consumer: consumer);
+
+                Console.WriteLine(" Press [enter] to exit.");
+                Console.ReadLine();
             }
 
-            Console.WriteLine(" Press [enter] to exit.");
-            Console.ReadLine();
         }
     }
 }
