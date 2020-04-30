@@ -41,7 +41,7 @@ namespace ProofOfConceptWebApi.Controllers
                                      basicProperties: properties,
                                      body: body);
             }
-            return Ok();
+            return Ok($"Counter:{Counter}; CurrentQueued: {CurrentQueued}");
         }
 
         [HttpPost("Add")]
@@ -54,11 +54,11 @@ namespace ProofOfConceptWebApi.Controllers
                 _ = Task.Run(() =>
                   {
                       Thread.Sleep(10000);
-                      string path = @$"D:\Shared\Test.txt";
+                      string path = @$"D:\Shared\Test{DateTime.Now.Ticks}.txt";
                       using (StreamWriter sw = System.IO.File.CreateText(path)) ;
                   });
 
-                return new ObjectResult(null)
+                return new ObjectResult(CurrentQueued)
                 {
                     StatusCode = (int)HttpStatusCode.Created
                 };
@@ -73,7 +73,7 @@ namespace ProofOfConceptWebApi.Controllers
         }
 
         [HttpPut("Done")]
-        public IActionResult Done()
+        public async Task<IActionResult> Done()
         {
             CurrentQueued -= 1;
 
@@ -81,11 +81,7 @@ namespace ProofOfConceptWebApi.Controllers
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.QueueDeclare(queue: "OtherQueue",
-                                     durable: true,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
+                channel.ExchangeDeclare(exchange: "QueueReseter", type: ExchangeType.Fanout);
 
                 var message = $"";
                 var body = Encoding.UTF8.GetBytes(message);
@@ -93,12 +89,12 @@ namespace ProofOfConceptWebApi.Controllers
                 var properties = channel.CreateBasicProperties();
                 properties.Persistent = true;
 
-                channel.BasicPublish(exchange: "",
-                                     routingKey: "task_queue_done",
+                channel.BasicPublish(exchange: "QueueReseter",
+                                     routingKey: "",
                                      basicProperties: properties,
                                      body: body);
             }
-            return Ok();
+            return Ok(CurrentQueued);
         }
     }
 }

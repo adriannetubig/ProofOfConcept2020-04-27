@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProofOfConceptWebApi", "Pro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProofOfConceptRabbitMqConsole", "ProofOfConceptRabbitMqConsole\ProofOfConceptRabbitMqConsole.csproj", "{32DAD2F3-A236-4AE9-A827-72A60F4FFD79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProofOfConceptFileSystemWatcher", "ProofOfConceptFileSystemWatcher\ProofOfConceptFileSystemWatcher.csproj", "{D3568B68-6973-4647-A530-365A7415A688}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProofOfConceptFileSystemWatcher", "ProofOfConceptFileSystemWatcher\ProofOfConceptFileSystemWatcher.csproj", "{D3568B68-6973-4647-A530-365A7415A688}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

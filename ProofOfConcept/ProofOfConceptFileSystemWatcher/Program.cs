@@ -28,15 +28,12 @@ namespace ProofOfConceptFileSystemWatcher
                                      | NotifyFilters.FileName
                                      | NotifyFilters.DirectoryName;
 
-                // Only watch text files.
-                watcher.Filter = "*.txt";
-
                 // Add event handlers.
                 //watcher.Changed += OnChanged;
                 //watcher.Created += OnChanged;
                 //watcher.Deleted += OnChanged;
 
-                watcher.Changed += async (model, e) =>
+                watcher.Created += async (model, e) =>
                 {
 
                     Console.WriteLine($"File: {e.FullPath} {e.ChangeType}");
@@ -56,9 +53,8 @@ namespace ProofOfConceptFileSystemWatcher
                 // Begin watching.
                 watcher.EnableRaisingEvents = true;
 
-                // Wait for the user to quit the program.
-                Console.WriteLine("Press 'q' to quit the sample.");
-                while (Console.Read() != 'q') ;
+                Console.WriteLine(" Press [enter] to exit.");
+                Console.ReadLine();
             }
         }
 
